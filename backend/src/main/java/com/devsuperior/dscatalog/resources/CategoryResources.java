@@ -7,13 +7,12 @@ import com.devsuperior.dscatalog.services.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -30,8 +29,15 @@ public class CategoryResources implements Serializable {
 
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> findAll() {
-        // log.info("[Categories Controller] - List all categories");
+        log.info("[Categories Controller] - List all categories");
         List<Category> list = service.findAll();
         return ResponseEntity.ok().body(mapper.toDto(list));
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
+        log.info("[Categories Controller] - Get category by id");
+        Category category = service.findById(id);
+        return ResponseEntity.ok().body(mapper.toDto(category));
     }
 }
