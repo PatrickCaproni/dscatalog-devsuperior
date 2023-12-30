@@ -58,4 +58,11 @@ public class CategoryResources implements Serializable {
         Category newCategory = service.update(id, category);
         return ResponseEntity.ok().body(mapper.toDto(newCategory));
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("[Categories Controller] - Delete category by id");
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
