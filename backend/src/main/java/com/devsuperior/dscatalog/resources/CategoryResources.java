@@ -51,4 +51,11 @@ public class CategoryResources implements Serializable {
                 .buildAndExpand(category.getId()).toUri();
         return ResponseEntity.created(uri).body(mapper.toDto(newCategory));
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO category) {
+        log.info("[Categories Controller] - Update category by id");
+        Category newCategory = service.update(id, category);
+        return ResponseEntity.ok().body(mapper.toDto(newCategory));
+    }
 }
