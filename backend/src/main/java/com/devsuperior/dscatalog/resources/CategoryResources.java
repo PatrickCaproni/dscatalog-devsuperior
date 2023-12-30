@@ -6,6 +6,9 @@ import com.devsuperior.dscatalog.mappers.CategoryMapper;
 import com.devsuperior.dscatalog.services.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -13,8 +16,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.Serial;
 import java.io.Serializable;
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -30,10 +31,14 @@ public class CategoryResources implements Serializable {
     private CategoryMapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> findAll() {
-        log.info("[Categories Controller] - List all categories");
-        List<Category> list = service.findAll();
-        return ResponseEntity.ok().body(mapper.toDto(list));
+    public ResponseEntity<Page<CategoryDTO>> findAllPaged(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                          @RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
+                                                          @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+                                                          @RequestParam(value = "orderBy", defaultValue = "name") String orderBy) {
+        log.info("[Categories Controller] - List all categories paged");
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Page<Category> categories = service.findAllPaged(pageRequest);
+        return ResponseEntity.ok().body(categories.map(category -> mapper.toDto(category)));
     }
 
     @GetMapping(value = "/{id}")
