@@ -8,9 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,5 +41,14 @@ public class CategoryResources implements Serializable {
         log.info("[Categories Controller] - Get category by id");
         Category category = service.findById(id);
         return ResponseEntity.ok().body(mapper.toDto(category));
+    }
+
+    @PostMapping
+    public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO category) {
+        log.info("[Categories Controller] - Register new Category");
+        Category newCategory = service.insert(mapper.toEntity(category));
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(category.getId()).toUri();
+        return ResponseEntity.created(uri).body(mapper.toDto(newCategory));
     }
 }

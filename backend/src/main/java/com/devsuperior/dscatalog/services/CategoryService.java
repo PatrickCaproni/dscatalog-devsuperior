@@ -30,4 +30,9 @@ public class CategoryService implements Serializable {
         return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
     }
 
+    @Transactional
+    public Category insert(Category category) {
+        return repository.save(category);
+    }
+
 }
