@@ -3,9 +3,12 @@ package com.devsuperior.dscatalog.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.Instant;
 
 @Entity
 @ToString
@@ -27,4 +30,12 @@ public class Category implements Serializable {
 
     @Column(name = "name")
     private String name;
+
+    @CreatedDate
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant createdAt;
+
+    @LastModifiedDate
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant updatedAt;
 }
