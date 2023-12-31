@@ -43,6 +43,8 @@ public class Product implements Serializable {
     @Column(name = "img_url")
     private String imgUrl;
 
+    @Getter
+    @Setter
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_product_category",
             joinColumns = @JoinColumn(name = "product_id"),

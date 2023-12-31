@@ -6,6 +6,7 @@ import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.entities.Product;
 import com.devsuperior.dscatalog.exceptions.DataBaseException;
 import com.devsuperior.dscatalog.exceptions.ResourceNotFoundException;
+import com.devsuperior.dscatalog.mappers.ProductMapper;
 import com.devsuperior.dscatalog.repositories.CategoryRepository;
 import com.devsuperior.dscatalog.repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Optional;
 
 @Service
 public class ProductService implements Serializable {
@@ -27,6 +29,12 @@ public class ProductService implements Serializable {
 
     @Autowired
     private ProductRepository repository;
+
+    @Autowired
+    private ProductMapper mapper;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
     public Page<Product> findAllPaged(PageRequest pageRequest) {
@@ -47,11 +55,26 @@ public class ProductService implements Serializable {
     public Product update(Long id, ProductDTO productDTO) {
         try {
             Product productToBeUpdated = repository.getReferenceById(id);
-            // productToBeUpdated.setName(productDTO.getName());
+            copyDtoToEntity(productDTO, productToBeUpdated);
             productToBeUpdated = repository.save(productToBeUpdated);
             return productToBeUpdated;
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);
+        }
+    }
+
+    private void copyDtoToEntity(ProductDTO dto, Product entity) {
+        entity.setName(dto.getName());
+        entity.setDate(dto.getDate());
+        entity.setPrice(dto.getPrice());
+        entity.setDescription(dto.getDescription());
+        entity.setImgUrl(dto.getImgUrl());
+
+        entity.getCategories().clear();
+
+        for (CategoryDTO categoryDTO : dto.getCategories()) {
+            Optional<Category> category = categoryRepository.findById(categoryDTO.getId());
+            category.ifPresent(value -> entity.getCategories().add(value));
         }
     }
 
