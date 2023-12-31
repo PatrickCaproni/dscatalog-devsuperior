@@ -10,13 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
 @Service
 public class CategoryService implements Serializable {
@@ -27,8 +26,8 @@ public class CategoryService implements Serializable {
     private CategoryRepository repository;
 
     @Transactional(readOnly = true)
-    public Page<Category> findAllPaged(PageRequest pageRequest) {
-        return repository.findAll(pageRequest);
+    public Page<Category> findAllPaged(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Transactional(readOnly = true)

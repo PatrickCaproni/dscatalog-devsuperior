@@ -7,8 +7,7 @@ import com.devsuperior.dscatalog.services.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,13 +30,9 @@ public class CategoryResources implements Serializable {
     private CategoryMapper mapper;
 
     @GetMapping
-    public ResponseEntity<Page<CategoryDTO>> findAllPaged(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                                          @RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
-                                                          @RequestParam(value = "direction", defaultValue = "ASC") String direction,
-                                                          @RequestParam(value = "orderBy", defaultValue = "name") String orderBy) {
+    public ResponseEntity<Page<CategoryDTO>> findAllPaged(Pageable pageable) {
         log.info("[Categories Controller] - List all categories paged");
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        Page<Category> categories = service.findAllPaged(pageRequest);
+        Page<Category> categories = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(categories.map(category -> mapper.toDto(category)));
     }
 
