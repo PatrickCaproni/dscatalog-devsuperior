@@ -53,12 +53,14 @@ public class CategoryService implements Serializable {
     }
 
     public void delete(Long id) {
-        try {
-            repository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
+        if (repository.existsById(id)) {
+            try {
+                repository.deleteById(id);
+            } catch (DataIntegrityViolationException e) {
+                throw new DataBaseException("Integrity violation");
+            }
+        } else {
             throw new ResourceNotFoundException("Id not found " + id);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataBaseException("Integrity violation");
         }
     }
 
