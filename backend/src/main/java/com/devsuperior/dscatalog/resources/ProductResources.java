@@ -4,6 +4,7 @@ import com.devsuperior.dscatalog.dtos.ProductDTO;
 import com.devsuperior.dscatalog.entities.Product;
 import com.devsuperior.dscatalog.mappers.ProductMapper;
 import com.devsuperior.dscatalog.services.ProductService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,7 +45,7 @@ public class ProductResources implements Serializable {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO product) {
+    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO product) {
         log.info("[Products Controller] - Register new Product");
         Product newProduct = service.insert(mapper.toEntity(product));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -53,7 +54,7 @@ public class ProductResources implements Serializable {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO product) {
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO product) {
         log.info("[Products Controller] - Update product by id");
         Product newProduct = service.update(id, product);
         return ResponseEntity.ok().body(mapper.toDto(newProduct));

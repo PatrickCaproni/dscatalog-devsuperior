@@ -3,7 +3,7 @@ package com.devsuperior.dscatalog.mappers;
 import com.devsuperior.dscatalog.dtos.UserDTO;
 import com.devsuperior.dscatalog.dtos.UserInsertDTO;
 import com.devsuperior.dscatalog.entities.User;
-import com.devsuperior.dscatalog.utils.map.struct.EntityMapper;
+import com.devsuperior.dscatalog.mappers.map.struct.EntityMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

@@ -1,4 +1,4 @@
-package com.devsuperior.dscatalog.utils.map.struct;
+package com.devsuperior.dscatalog.mappers.map.struct;
 
 import java.util.List;
 

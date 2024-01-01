@@ -1,6 +1,7 @@
 package com.devsuperior.dscatalog.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
@@ -27,7 +28,7 @@ public class UserDTO implements Serializable {
     @NotEmpty(message = "last name is a required field")
     private String lastName;
 
-    @NotEmpty(message = "email is a required field")
+    @Email(message = "email must be valid")
     private String email;
 
     private Set<RoleDTO> roles = new HashSet<>();

@@ -5,12 +5,12 @@ import com.devsuperior.dscatalog.dtos.UserInsertDTO;
 import com.devsuperior.dscatalog.entities.User;
 import com.devsuperior.dscatalog.mappers.UserMapper;
 import com.devsuperior.dscatalog.services.UserService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -46,7 +46,7 @@ public class UserResources implements Serializable {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> insert(@Validated @RequestBody UserInsertDTO user) {
+    public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO user) {
         log.info("[Users Controller] - Register new User");
         User newUser = service.insert(mapper.toEntityWithPassword(user));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -55,7 +55,7 @@ public class UserResources implements Serializable {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserDTO user) {
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO user) {
         log.info("[Users Controller] - Update user by id");
         User newUser = service.update(id, user);
         return ResponseEntity.ok().body(mapper.toDto(newUser));
