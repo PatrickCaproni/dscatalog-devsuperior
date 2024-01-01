@@ -9,8 +9,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @ToString
@@ -21,8 +19,8 @@ import java.util.Set;
 @Setter
 @Builder
 @Slf4j
-@Table(name = "tb_category")
-public class Category implements Serializable {
+@Table(name = "tb_role")
+public class Role implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -30,17 +28,6 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
-
-    @CreatedDate
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant createdAt;
-
-    @LastModifiedDate
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant updatedAt;
-
-    @ManyToMany(mappedBy = "categories")
-    private Set<Product> products = new HashSet<>();
+    @Column(name = "authority")
+    private String authority;
 }

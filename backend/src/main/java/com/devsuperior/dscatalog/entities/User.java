@@ -21,8 +21,8 @@ import java.util.Set;
 @Setter
 @Builder
 @Slf4j
-@Table(name = "tb_category")
-public class Category implements Serializable {
+@Table(name = "tb_user")
+public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -30,17 +30,22 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "first_name")
+    private String firstName;
 
-    @CreatedDate
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant createdAt;
+    @Column(name = "last_name")
+    private String lastName;
 
-    @LastModifiedDate
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant updatedAt;
+    @Column(name = "email")
+    private String email;
 
-    @ManyToMany(mappedBy = "categories")
-    private Set<Product> products = new HashSet<>();
+    @Column(name = "password")
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tb_user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 }
