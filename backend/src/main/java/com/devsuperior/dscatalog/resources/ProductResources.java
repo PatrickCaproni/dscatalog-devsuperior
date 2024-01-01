@@ -33,7 +33,7 @@ public class ProductResources implements Serializable {
     public ResponseEntity<Page<ProductDTO>> findAllPaged(Pageable pageable) {
         log.info("[Products Controller] - List all products paged");
         Page<Product> products = service.findAllPaged(pageable);
-        return ResponseEntity.ok().body(products.map(product -> mapper.toDto(product)));
+        return ResponseEntity.ok().body(mapper.toDtoPage(products));
     }
 
     @GetMapping(value = "/{id}")

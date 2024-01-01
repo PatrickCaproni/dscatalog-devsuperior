@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,14 +54,10 @@ public class ProductService implements Serializable {
 
     @Transactional
     public Product update(Long id, ProductDTO productDTO) {
-        try {
-            Product productToBeUpdated = repository.getReferenceById(id);
-            copyDtoToEntity(productDTO, productToBeUpdated);
-            productToBeUpdated = repository.save(productToBeUpdated);
-            return productToBeUpdated;
-        } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("Id not found " + id);
-        }
+        Product productToBeUpdated = findById(id);
+        copyDtoToEntity(productDTO, productToBeUpdated);
+        productToBeUpdated = repository.save(productToBeUpdated);
+        return productToBeUpdated;
     }
 
     private void copyDtoToEntity(ProductDTO dto, Product entity) {

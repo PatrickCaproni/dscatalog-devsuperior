@@ -4,6 +4,8 @@ import com.devsuperior.dscatalog.dtos.ProductDTO;
 import com.devsuperior.dscatalog.entities.Product;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductFixture {
 
@@ -37,5 +39,19 @@ public class ProductFixture {
     public static ProductDTO productDTO() {
         Product product = product();
         return new ProductDTO(product, product.getCategories());
+    }
+
+    public static List<Product> productList() {
+        List<Product> productList = new ArrayList<>();
+        Product product = product();
+        productList.add(product);
+        return productList;
+    }
+
+    public static List<ProductDTO> productDTOList() {
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        Product product = product();
+        productDTOList.add(new ProductDTO(product, product.getCategories()));
+        return productDTOList;
     }
 }
